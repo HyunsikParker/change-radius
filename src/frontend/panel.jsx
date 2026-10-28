@@ -21,7 +21,7 @@ const FINDING_TEXT = {
 };
 const classAppearance = { C: 'removed', B: 'moved', A: 'success' };
 
-const keyCell = (key) => (key.startsWith('PAGE-') ? <Text>{key}</Text> : <Link href={`/browse/${key}`}>{key}</Link>);
+const keyCell = (key, url) => (key.startsWith('PAGE-') ? (url ? <Link href={url} openNewTab>Page</Link> : <Text>Page</Text>) : <Link href={`/browse/${key}`}>{key}</Link>);
 
 function Section({ title, rows }) {
   return (
@@ -34,7 +34,7 @@ function Section({ title, rows }) {
           head={{ cells: [{ key: 'k', content: 'Key' }, { key: 's', content: 'Summary' }, { key: 'p', content: 'Reached through' }] }}
           rows={rows.map((r) => ({
             key: r.key,
-            cells: [{ key: 'k', content: keyCell(r.key) }, { key: 's', content: r.summary }, { key: 'p', content: r.via.join(' → ') }],
+            cells: [{ key: 'k', content: keyCell(r.key, r.url) }, { key: 's', content: r.summary }, { key: 'p', content: r.via.map((v) => (v.startsWith('PAGE-') ? 'page' : v)).join(' → ') }],
           }))}
         />
       )}

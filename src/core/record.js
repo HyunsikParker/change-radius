@@ -37,7 +37,9 @@ export function impactRecordBody(report, change, generatedAt) {
     }
     parts.push('<table><tbody><tr><th>Key</th><th>Summary</th><th>Status</th><th>Reached through</th></tr>');
     for (const r of rows) {
-      parts.push(`<tr><td>${esc(r.key)}</td><td>${esc(r.summary)}</td><td>${esc(r.status)}</td><td>${esc(r.via.join(' → '))}</td></tr>`);
+      const key = r.key.startsWith('PAGE-') ? (r.url ? `<a href="${esc(r.url)}">page</a>` : 'page') : esc(r.key);
+      const via = r.via.map((v) => (v.startsWith('PAGE-') ? 'page' : v)).join(' → ');
+      parts.push(`<tr><td>${key}</td><td>${esc(r.summary)}</td><td>${esc(r.status)}</td><td>${esc(via)}</td></tr>`);
     }
     parts.push('</tbody></table>');
   }

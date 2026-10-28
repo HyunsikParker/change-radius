@@ -82,7 +82,12 @@ export function analyseChange(graph, changeKey) {
 }
 
 function toList(graph, map) {
-  return [...map.entries()].map(([key, via]) => ({ key, summary: graph.get(key).summary, status: graph.get(key).status, via }));
+  return [...map.entries()].map(([key, via]) => {
+    const node = graph.get(key);
+    const row = { key, summary: node.summary, status: node.status, via };
+    if (node.url) row.url = node.url;
+    return row;
+  });
 }
 
 function findings(graph, items, requirements, controls, verifications) {
