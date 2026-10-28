@@ -31,6 +31,9 @@ test('issues, links and Confluence pages become one graph', () => {
       { application: { type: 'com.atlassian.confluence' }, object: { url: 'https://x/wiki/spaces/A/pages/12/Design', title: 'Design spec' } },
       { application: { type: 'other' }, object: { url: 'https://example.com', title: 'ignored' } },
     ],
+    'P-1': [
+      { application: { type: 'com.atlassian.confluence' }, relationship: 'Impact assessment', object: { url: 'https://x/wiki/spaces/A/pages/40/Impact', title: 'Impact assessment P-1' } },
+    ],
   };
   const { nodes, links } = fromJira(issues, remote);
   assert.deepEqual(nodes.map((n) => n.key), ['P-1', 'P-2', 'P-3', 'P-4', 'PAGE-12']);

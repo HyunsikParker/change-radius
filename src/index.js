@@ -6,6 +6,7 @@ import { impactRecordBody, releaseReadiness } from './core/record.js';
 import { seedSample } from './core/seed.js';
 import { suggestItems } from './core/suggest.js';
 import { createReverificationTasks } from './core/reverify.js';
+import { IMPACT_RECORD } from './core/jira-adapter.js';
 
 const projectOf = (issueKey) => String(issueKey).split('-')[0];
 
@@ -51,7 +52,7 @@ resolver.define('createImpactRecord', async ({ payload, context }) => {
     body: JSON.stringify({
       object: { url, title },
       application: { type: 'com.atlassian.confluence', name: 'Confluence' },
-      relationship: 'Impact assessment',
+      relationship: IMPACT_RECORD,
     }),
   });
   return { ok: true, url, title };

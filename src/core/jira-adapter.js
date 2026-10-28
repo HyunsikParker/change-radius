@@ -21,6 +21,8 @@ export function safetyClassOf(labels = []) {
   return null;
 }
 
+export const IMPACT_RECORD = 'Impact assessment';
+
 export function confluencePageId(url = '') {
   const m = /[?&]pageId=(\d+)/.exec(url) || /\/pages\/(\d+)/.exec(url);
   return m ? m[1] : null;
@@ -59,6 +61,7 @@ export function fromJira(issues, remoteLinksByKey = {}) {
     }
     for (const remote of remoteLinksByKey[issue.key] || []) {
       if (remote.application?.type !== 'com.atlassian.confluence') continue;
+      if (remote.relationship === IMPACT_RECORD) continue; // the app's own records are output, not documents to review
       const pageId = confluencePageId(remote.object?.url);
       if (!pageId) continue;
       const docKey = `PAGE-${pageId}`;
