@@ -92,7 +92,12 @@ resolver.define('createReverification', async ({ context }) => {
   return { ok: true, created };
 });
 
-resolver.define('seedSample', async ({ context }) => seedSample(jiraRequest, context.extension.project.key));
+resolver.define('seedSample', async ({ context }) => {
+  const projectKey = context.extension.project.key;
+  const { graph } = await loadGraph(projectKey);
+  if (graph.size > 0) return { ok: false, error: 'This project already has trace issues, so the sample was not loaded again.' };
+  return { ok: true, ...(await seedSample(jiraRequest, projectKey)) };
+});
 
 export const handler = resolver.getDefinitions();
 

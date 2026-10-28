@@ -6,12 +6,14 @@ import { invoke } from '@forge/bridge';
 
 const ALL = { label: 'All change requests', value: '' };
 
-function Readiness({ versionId }) {
+function Readiness({ versionId, onLoaded }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
     setData(null);
-    invoke('getRelease', { versionId }).then(setData).catch((e) => setError(String(e)));
+    invoke('getRelease', { versionId })
+      .then((d) => { setData(d); if (onLoaded) onLoaded(d); })
+      .catch((e) => setError(String(e)));
   }, [versionId]);
   if (error) return <SectionMessage appearance="error"><Text>{error}</Text></SectionMessage>;
   if (!data) return <Spinner label="Analysing changes" />;
@@ -48,6 +50,7 @@ function Seed({ onDone }) {
     setState({ busy: true });
     try {
       const r = await invoke('seedSample');
+      if (!r.ok) { setState({ ok: false, error: r.error }); return; }
       setState({ ok: true, count: Object.keys(r.created).length, links: r.links });
       onDone();
     } catch (e) {
@@ -68,6 +71,7 @@ function App() {
   const [versions, setVersions] = useState(null);
   const [selected, setSelected] = useState(ALL);
   const [refresh, setRefresh] = useState(0);
+  const [hasTrace, setHasTrace] = useState(null);
   useEffect(() => {
     invoke('getVersions').then(setVersions).catch(() => setVersions([]));
   }, []);
@@ -78,8 +82,8 @@ function App() {
         <Text>Check every change request in a release against its trace before you ship.</Text>
         <Select inputId="version" options={options} value={selected} onChange={(o) => setSelected(o || ALL)} />
       </Stack>
-      <Readiness key={`${selected.value}-${refresh}`} versionId={selected.value} />
-      <Seed onDone={() => setRefresh((n) => n + 1)} />
+      <Readiness key={`${selected.value}-${refresh}`} versionId={selected.value} onLoaded={(d) => { if (!selected.value) setHasTrace(d.changes.length > 0); }} />
+      {hasTrace === false && <Seed onDone={() => setRefresh((n) => n + 1)} />}
     </Stack>
   );
 }

@@ -16,7 +16,7 @@ modules:
       title: Release impact
   rovo:agent:
     - key: change-impact-agent
-      name: Change Impact Analyst
+      name: Change Radius Analyst
       description: Explains what a Jira change request touches in the trace (items,
         requirements, hazards, controls, verification and documents) and whether
         a release has open findings.

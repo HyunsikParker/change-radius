@@ -29,7 +29,7 @@ Issue links of any type connect them. Confluence pages linked to an issue become
   yet, an impact record written to Confluence, and one re-verification task per verification to repeat.
 - **Release impact page** (Jira project page): every change in a fix version with open verification and findings, and
   a button that loads a fictional infusion-pump sample trace (15 issues, 13 links) so you can try the app quickly.
-- **Rovo agent "Change Impact Analyst"** and the same two actions over **Rovo MCP**: `get-change-impact` and
+- **Rovo agent "Change Radius Analyst"** and the same two actions over **Rovo MCP**: `get-change-impact` and
   `get-release-readiness`.
 
 Change Radius does not decide whether a change is safe or acceptable. It assembles the trace so that the person who
