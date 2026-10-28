@@ -43,6 +43,16 @@ connects to `https://mcp.atlassian.com/forge/ca77507f-1d7c-45e1-b89f-bf84ac8bc62
 [`skills/change-radius/SKILL.md`](skills/change-radius/SKILL.md) tells a third-party agent when to call each tool and how
 to report the result.
 
+## Screenshots
+
+![The Change impact panel on a change request: highest safety class, open findings and the affected software items.](docs/images/2-change-impact-panel.jpg)
+
+![Release impact: each change request in a release with its highest safety class, verification still open and findings.](docs/images/1-release-impact.jpg)
+
+![The impact record in Confluence, with the same paths and links to the documents to review.](docs/images/7-confluence-record.jpg)
+
+The data in the screenshots is fictional sample data.
+
 ## Try it
 
 1. Install the app on a Jira site with Confluence (installation link on the Devpost page).
