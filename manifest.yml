@@ -1,0 +1,97 @@
+modules:
+  jira:issuePanel:
+    - key: change-impact-panel
+      resource: panel
+      resolver:
+        function: resolver
+      render: native
+      title: Change impact
+      icon: resource:icons;impact.svg
+  jira:projectPage:
+    - key: release-impact-page
+      resource: release
+      resolver:
+        function: resolver
+      render: native
+      title: Release impact
+  rovo:agent:
+    - key: change-impact-agent
+      name: Change Impact Analyst
+      description: Explains what a Jira change request touches in the trace (items,
+        requirements, hazards, controls, verification and documents) and whether
+        a release has open findings.
+      prompt: resource:agent;prompt.txt
+      conversationStarters:
+        - What does this change touch?
+        - Which tests must I repeat for this change?
+        - Is our next release ready?
+      actions:
+        - get-change-impact
+        - get-release-readiness
+  rovo:mcp:
+    - key: change-impact-mcp
+      name: Change impact tools
+      tools:
+        - get-change-impact
+        - get-release-readiness
+  action:
+    - key: get-change-impact
+      name: Get change impact
+      function: getChangeImpact
+      actionVerb: GET
+      description: >
+        Returns what one Jira change request touches in the trace: software items and highest safety class,
+        requirements, risk controls, hazards, verification to repeat, documents, findings and similar past changes.
+      inputs:
+        issueKey:
+          title: Issue key
+          type: string
+          required: true
+          description: The key of a Jira issue labelled trace-change, for example DEMO-12.
+    - key: get-release-readiness
+      name: Get release readiness
+      function: getReleaseReadiness
+      actionVerb: GET
+      description: >
+        Lists the change requests in a Jira project (optionally one fix version) with open verification and findings,
+        and says whether every change has a clean impact path.
+      inputs:
+        projectKey:
+          title: Project key
+          type: string
+          required: true
+          description: The Jira project key, for example DEMO.
+        version:
+          title: Fix version
+          type: string
+          required: false
+          description: The fix version name. Leave empty for all change requests in the
+            project.
+  function:
+    - key: resolver
+      handler: index.handler
+    - key: getChangeImpact
+      handler: index.getChangeImpact
+    - key: getReleaseReadiness
+      handler: index.getReleaseReadiness
+resources:
+  - key: panel
+    path: src/frontend/panel.jsx
+  - key: release
+    path: src/frontend/release.jsx
+  - key: agent
+    path: resources/agent
+  - key: icons
+    path: resources/icons
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/ca77507f-1d7c-45e1-b89f-bf84ac8bc622
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+    - read:space:confluence
+    - write:page:confluence
