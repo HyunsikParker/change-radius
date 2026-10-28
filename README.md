@@ -51,7 +51,7 @@ to report the result.
 
 ![The impact record in Confluence, with the same paths and links to the documents to review.](docs/images/7-confluence-record.jpg)
 
-The data in the screenshots is fictional sample data.
+The screenshots show fictional sample data.
 
 ## Try it
 
