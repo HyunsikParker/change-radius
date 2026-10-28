@@ -62,6 +62,10 @@ forge deploy -e development
 forge install --site <your-site>.atlassian.net -p Jira -e development
 ```
 
+## Credits
+
+Built with help from an AI coding assistant (Anthropic Claude). Sample data is fictional.
+
 ## Licence
 
 MIT.
