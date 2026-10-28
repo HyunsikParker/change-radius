@@ -78,12 +78,13 @@ function ImpactRecord() {
   );
 }
 
-function Suggestions({ suggestions }) {
+function Suggestions({ suggestions, onLinked }) {
   const [linked, setLinked] = useState({});
   const link = async (key) => {
     setLinked((s) => ({ ...s, [key]: 'busy' }));
     const r = await invoke('linkItem', { itemKey: key });
     setLinked((s) => ({ ...s, [key]: r.ok ? 'done' : r.error }));
+    if (r.ok && onLinked) onLinked();
   };
   if (suggestions.length === 0) {
     return <SectionMessage appearance="warning" title="No software item linked"><Text>Link the software items this change modifies; the impact analysis starts from them.</Text></SectionMessage>;
@@ -91,7 +92,7 @@ function Suggestions({ suggestions }) {
   return (
     <SectionMessage appearance="information" title="No software item linked yet">
       <Stack space="space.100">
-        <Text>Past changes with similar wording modified these items. Link the ones this change touches; reload the panel after linking.</Text>
+        <Text>Past changes with similar wording modified these items. Link the ones this change touches and the analysis updates.</Text>
         {suggestions.map((s) => (
           <Inline key={s.key} space="space.100" alignBlock="center">
             {keyCell(s.key)}
@@ -112,9 +113,8 @@ function Suggestions({ suggestions }) {
 function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  useEffect(() => {
-    invoke('getPanelData').then(setData).catch((e) => setError(String(e)));
-  }, []);
+  const load = () => invoke('getPanelData').then(setData).catch((e) => setError(String(e)));
+  useEffect(() => { load(); }, []);
 
   if (error) return <SectionMessage appearance="error"><Text>{error}</Text></SectionMessage>;
   if (!data) return <Spinner label="Reading trace links" />;
@@ -131,9 +131,9 @@ function App() {
   }
 
   const { report, similar, suggestions = [] } = data;
+  if (report.items.length === 0) return <Suggestions suggestions={suggestions} onLinked={load} />;
   return (
     <Stack space="space.200">
-      {report.items.length === 0 && <Suggestions suggestions={suggestions} />}
       <Inline space="space.100" alignBlock="center">
         <Text>Highest safety class</Text>
         {report.safetyClass ? <Lozenge appearance={classAppearance[report.safetyClass]} isBold>{`Class ${report.safetyClass}`}</Lozenge> : <Lozenge>Not set</Lozenge>}
