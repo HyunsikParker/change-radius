@@ -17,6 +17,7 @@ export async function seedSample(request, projectKey, issueTypeName = 'Task') {
       },
     });
     created[node.key] = res.key;
+    if (node.done) await moveToDone(request, res.key);
   }
   let links = 0;
   for (const [a, b] of SAMPLE_LINKS) {
@@ -29,4 +30,13 @@ export async function seedSample(request, projectKey, issueTypeName = 'Task') {
     links += 1;
   }
   return { created, links };
+}
+
+// Moves an issue to the first transition whose target status is in the done category (workflows differ by project).
+export async function moveToDone(request, key) {
+  const t = await request('GET', `/rest/api/3/issue/${key}/transitions`);
+  const done = (t?.transitions || []).find((x) => x.to?.statusCategory?.key === 'done');
+  if (!done) return false;
+  await request('POST', `/rest/api/3/issue/${key}/transitions`, { transition: { id: done.id } });
+  return true;
 }

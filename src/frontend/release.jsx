@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ForgeReconciler, {
-  Button, DynamicTable, Heading, Inline, Link, Lozenge, SectionMessage, Select, Spinner, Stack, Text,
+  Button, DynamicTable, Inline, Link, Lozenge, SectionMessage, Select, Spinner, Stack, Text,
 } from '@forge/react';
 import { invoke } from '@forge/bridge';
 
@@ -75,7 +75,6 @@ function App() {
   return (
     <Stack space="space.300">
       <Stack space="space.100">
-        <Heading as="h2">Release impact</Heading>
         <Text>Check every change request in a release against its trace before you ship.</Text>
         <Select inputId="version" options={options} value={selected} onChange={(o) => setSelected(o || ALL)} />
       </Stack>
