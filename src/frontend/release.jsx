@@ -21,7 +21,7 @@ function Readiness({ versionId, onLoaded }) {
   const blocked = data.changes.filter((c) => !c.ready).length;
   return (
     <Stack space="space.150">
-      <SectionMessage appearance={data.ready ? 'success' : 'warning'} title={data.ready ? 'Every change has a clean impact path' : `${blocked} of ${data.changes.length} changes have open findings`}>
+      <SectionMessage appearance={data.ready ? 'success' : 'warning'} title={data.ready ? 'Every change has a clean impact path' : `${blocked} of ${data.changes.length} changes ${blocked === 1 ? 'has' : 'have'} open findings`}>
         <Text>Open findings are verification that is not done, requirements or controls without verification, and items without a safety class.</Text>
       </SectionMessage>
       <DynamicTable

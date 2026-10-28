@@ -137,7 +137,7 @@ function App() {
       <Inline space="space.100" alignBlock="center">
         <Text>Highest safety class</Text>
         {report.safetyClass ? <Lozenge appearance={classAppearance[report.safetyClass]} isBold>{`Class ${report.safetyClass}`}</Lozenge> : <Lozenge>Not set</Lozenge>}
-        <Lozenge appearance={report.findings.length ? 'moved' : 'success'}>{report.findings.length ? `${report.findings.length} open findings` : 'No open findings'}</Lozenge>
+        <Lozenge appearance={report.findings.length ? 'moved' : 'success'}>{report.findings.length ? `${report.findings.length} open finding${report.findings.length === 1 ? '' : 's'}` : 'No open findings'}</Lozenge>
       </Inline>
       <Tabs id="impact-tabs">
         <TabList>
