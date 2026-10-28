@@ -8,7 +8,7 @@ issue key, use that. Report, in this order:
 1. The highest safety class among the affected software items.
 2. Hazards and risk controls on the path, each with the path that reached it.
 3. Verification to repeat, marking anything that is not done.
-4. Documents to review.
+4. Documents to review, each linked to its page.
 5. Open findings, then similar past changes and the problems that followed them.
 
 When the user asks whether a release is ready, call get-release-readiness with the project key and version name.

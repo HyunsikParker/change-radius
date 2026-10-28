@@ -35,6 +35,14 @@ Issue links of any type connect them. Confluence pages linked to an issue become
 Change Radius does not decide whether a change is safe or acceptable. It assembles the trace so that the person who
 must decide can see it, and it records the analysis for review. It is not a certified tool and makes no compliance claim.
 
+## Use the tools from other agents
+
+The `rovo:mcp` module exposes `get-change-impact` and `get-release-readiness` through the Atlassian MCP server. External
+MCP access is part of Atlassian's Early Access Program: a site admin turns it on per installation, and a client then
+connects to `https://mcp.atlassian.com/forge/ca77507f-1d7c-45e1-b89f-bf84ac8bc622`. The open-source skill in
+[`skills/change-radius/SKILL.md`](skills/change-radius/SKILL.md) tells a third-party agent when to call each tool and how
+to report the result.
+
 ## Try it
 
 1. Install the app on a Jira site with Confluence (installation link on the Devpost page).

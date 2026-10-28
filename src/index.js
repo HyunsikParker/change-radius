@@ -103,7 +103,7 @@ resolver.define('seedSample', async ({ context }) => {
 export const handler = resolver.getDefinitions();
 
 // Rovo actions and MCP tools share these handlers.
-const compact = (list) => list.map((x) => ({ key: x.key, summary: x.summary, status: x.status, path: x.via.join(' > ') }));
+const compact = (list) => list.map((x) => ({ key: x.key, summary: x.summary, status: x.status, path: x.via.join(' > '), ...(x.url ? { url: x.url } : {}) }));
 
 export async function getChangeImpact(payload) {
   const issueKey = String(payload.issueKey || '').trim().toUpperCase();
